@@ -16,6 +16,7 @@ import . "mosaic-components/libraries/messages"
 
 var selfGroup = ComponentGroup ("ea4d6199f422180ffefeccb795cfea5d1eee5d0d")
 var ddaGroup = ComponentGroup ("2202877ee831a07c419eb9c62721e220d3251483")
+var kbGroup = ComponentGroup ("8170ac9800426eb467537d37b7172e1d96f993b7")
 
 
 type callbacks struct {
@@ -36,12 +37,17 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 		_callbacks.httpFqdn = _fqdn_1
 	}
 	
-	// FIXME!
-	_callbacks.httpPort = 8176
-	
 	_server.Transcript.TraceInformation ("  * using the HTTP endpoint: `%s:%d`;", _callbacks.httpIp.String (), _callbacks.httpPort)
 	
-	_server.ProcessExecutable = os.Getenv ("modaclouds_sda_run")
+	_server.ProcessExecutable = os.Getenv ("modaclouds_monitoring_sda_matlab_run")
+	_server.ProcessEnvironment = map[string]string {
+			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_IP" : _callbacks.httpIp.String (),
+			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
+			"MODACLOUDS_MONITORING_DDA_ENDPOINT_IP" : "???",
+			"MODACLOUDS_MONITORING_DDA_ENDPOINT_PORT" : "???",
+			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_IP" : "???",
+			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_PORT" : "???",
+	}
 	_server.SelfGroup = selfGroup
 	
 	return nil
@@ -52,7 +58,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 	
 	switch _operation {
 		
-		case "modaclouds-sda:get-http-endpoint" :
+		case "modaclouds-monitoring-sda-matlab:get-http-endpoint" :
 			
 			_outputs = map[string]interface{} {
 					"ip" : _callbacks.httpIp.String (),
