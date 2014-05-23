@@ -1,0 +1,1 @@
+../.repositories/mosaic-go-components/scripts/run-component.bash
