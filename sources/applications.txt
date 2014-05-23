@@ -1,1 +1,1 @@
-component-backend modaclouds-components-dda/main.go
+component-backend modaclouds-components-monitoring-dda/main.go

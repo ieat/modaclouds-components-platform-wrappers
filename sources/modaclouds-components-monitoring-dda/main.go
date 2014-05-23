@@ -35,12 +35,15 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 		_callbacks.httpFqdn = _fqdn_1
 	}
 	
-	// FIXME!
-	_callbacks.httpPort = 8175
-	
 	_server.Transcript.TraceInformation ("  * using the HTTP endpoint: `%s:%d`;", _callbacks.httpIp.String (), _callbacks.httpPort)
 	
-	_server.ProcessExecutable = os.Getenv ("modaclouds_dda_run")
+	_server.ProcessExecutable = os.Getenv ("modaclouds_monitoring_dda_run")
+	_server.ProcessEnvironment = map[string]string {
+			"MODACLOUDS_MONITORING_DDA_ENDPOINT_IP" : _callbacks.httpIp.String (),
+			"MODACLOUDS_MONITORING_DDA_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
+			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_IP" : "???",
+			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_PORT" : "???",
+	}
 	_server.SelfGroup = selfGroup
 	
 	return nil
@@ -51,7 +54,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 	
 	switch _operation {
 		
-		case "modaclouds-dda:get-http-endpoint" :
+		case "modaclouds-monitoring-dda:get-http-endpoint" :
 			
 			_outputs = map[string]interface{} {
 					"ip" : _callbacks.httpIp.String (),
