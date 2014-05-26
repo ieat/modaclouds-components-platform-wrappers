@@ -25,6 +25,18 @@ type callbacks struct {
 	httpIp net.IP
 	httpPort uint16
 	httpFqdn string
+	ddaIp net.IP
+	ddaPort uint16
+	ddaFqdn string
+	sdaWekaIp net.IP
+	sdaWekaPort uint16
+	sdaWekaFqdn string
+	sdaMatlabIp net.IP
+	sdaMatlabPort uint16
+	sdaMatlabFqdn string
+	kbIp net.IP
+	kbPort uint16
+	kbFqdn string
 }
 
 
@@ -41,18 +53,62 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
 	_server.Transcript.TraceInformation ("  * using the HTTP endpoint: `%s:%d`;", _callbacks.httpIp.String (), _callbacks.httpPort)
 	
+	_server.Transcript.TraceInformation ("resolving the DDA HTTP endpoint...")
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (ddaGroup, "modaclouds-monitoring-dda:get-http-endpoint"); _error != nil {
+		return _error
+	} else {
+		_callbacks.ddaIp = _ip_1
+		_callbacks.ddaPort = _port_1
+		_callbacks.ddaFqdn = _fqdn_1
+	}
+	
+	_server.Transcript.TraceInformation ("  * using the DDA endpoint: `%s:%d`;", _callbacks.ddaIp.String (), _callbacks.ddaPort)
+	
+	_server.Transcript.TraceInformation ("resolving the SDA Weka HTTP endpoint...")
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (sdaWekaGroup, "modaclouds-monitoring-sda-weka:get-http-endpoint"); _error != nil {
+		return _error
+	} else {
+		_callbacks.sdaWekaIp = _ip_1
+		_callbacks.sdaWekaPort = _port_1
+		_callbacks.sdaWekaFqdn = _fqdn_1
+	}
+	
+	_server.Transcript.TraceInformation ("  * using the SDA Weka endpoint: `%s:%d`;", _callbacks.sdaWekaIp.String (), _callbacks.sdaWekaPort)
+	
+	_server.Transcript.TraceInformation ("resolving the SDA Matlab HTTP endpoint...")
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (sdaMatlabGroup, "modaclouds-monitoring-sda-matlab:get-http-endpoint"); _error != nil {
+		return _error
+	} else {
+		_callbacks.sdaMatlabIp = _ip_1
+		_callbacks.sdaMatlabPort = _port_1
+		_callbacks.sdaMatlabFqdn = _fqdn_1
+	}
+	
+	_server.Transcript.TraceInformation ("  * using the SDA Matlab endpoint: `%s:%d`;", _callbacks.sdaMatlabIp.String (), _callbacks.sdaMatlabPort)
+	
+	_server.Transcript.TraceInformation ("resolving the knowledgebase HTTP endpoint...")
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (kbGroup, "modaclouds-knowledgebase:get-http-endpoint"); _error != nil {
+		return _error
+	} else {
+		_callbacks.kbIp = _ip_1
+		_callbacks.kbPort = _port_1
+		_callbacks.kbFqdn = _fqdn_1
+	}
+	
+	_server.Transcript.TraceInformation ("  * using the KB endpoint: `%s:%d`;", _callbacks.kbIp.String (), _callbacks.kbPort)
+	
 	_server.ProcessExecutable = os.Getenv ("modaclouds_monitoring_manager_run")
 	_server.ProcessEnvironment = map[string]string {
 			"MODACLOUDS_MONITORING_MANAGER_ENDPOINT_IP" : _callbacks.httpIp.String (),
 			"MODACLOUDS_MONITORING_MANAGER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
-			"MODACLOUDS_MONITORING_DDA_ENDPOINT_IP" : "???",
-			"MODACLOUDS_MONITORING_DDA_ENDPOINT_PORT" : "???",
-			"MODACLOUDS_MONITORING_SDA_WEKA_ENDPOINT_IP" : "???",
-			"MODACLOUDS_MONITORING_SDA_WEKA_ENDPOINT_PORT" : "???",
-			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_IP" : "???",
-			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_PORT" : "???",
-			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_IP" : "???",
-			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_PORT" : "???",
+			"MODACLOUDS_MONITORING_DDA_ENDPOINT_IP" : _callbacks.ddaIp.String (),
+			"MODACLOUDS_MONITORING_DDA_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.ddaPort),
+			"MODACLOUDS_MONITORING_SDA_WEKA_ENDPOINT_IP" : _callbacks.sdaWekaIp.String (),
+			"MODACLOUDS_MONITORING_SDA_WEKA_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.sdaWekaPort),
+			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_IP" : _callbacks.sdaMatlabIp.String (),
+			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.sdaMatlabPort),
+			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_IP" : _callbacks.kbIp.String (),
+			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.kbPort),
 	}
 	_server.SelfGroup = selfGroup
 	
