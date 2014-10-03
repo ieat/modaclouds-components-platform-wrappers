@@ -1,0 +1,6 @@
+
+{process_group_alias, 'modaclouds-components:monitoring-sda-weka', <<16#c79a3a7cb3c78724cc88001b67e332376cd95d0f : 160>>}.
+
+{process_configurator, 'modaclouds-components:monitoring-sda-weka', [term, json],
+		{mosaic_component_process_configurators, configure_generic,
+				{<<"modaclouds-components-monitoring-sda-weka--run-component">>, defaults}}}.
