@@ -1,0 +1,6 @@
+
+{process_group_alias, 'modaclouds-components:metric-explorer', <<16#7e079e121d36b8cec279b3116b2ec3d9a4e36045 : 160>>}.
+
+{process_configurator, 'modaclouds-components:metric-explorer', [term, json],
+		{mosaic_component_process_configurators, configure_generic,
+				{<<"modaclouds-components-metric-explorer--run-component">>, defaults}}}.
