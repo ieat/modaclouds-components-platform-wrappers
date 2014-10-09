@@ -53,7 +53,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 	
 	switch _operation {
 		
-		case "modaclouds-metric-explorer:get-http-endpoint" :
+		case "modaclouds-metric-importer:get-http-endpoint" :
 			
 			_outputs = map[string]interface{} {
 					"ip" : _callbacks.httpIp.String (),
