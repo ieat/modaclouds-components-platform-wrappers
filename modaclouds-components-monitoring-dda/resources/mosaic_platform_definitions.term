@@ -1,0 +1,6 @@
+
+{process_group_alias, 'modaclouds-components:monitoring-dda', <<16#2202877ee831a07c419eb9c62721e220d3251483 : 160>>}.
+
+{process_configurator, 'modaclouds-components:monitoring-dda', [term, json],
+		{mosaic_component_process_configurators, configure_generic,
+				{<<"modaclouds-components-monitoring-dda--run-component">>, defaults}}}.
