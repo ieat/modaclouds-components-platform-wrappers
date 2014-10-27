@@ -1,0 +1,6 @@
+
+{process_group_alias, 'modaclouds-components:metric-importer', <<16#a4f6135ee4897fe65e257a4e7b445c213676adf6 : 160>>}.
+
+{process_configurator, 'modaclouds-components:metric-importer', [term, json],
+		{mosaic_component_process_configurators, configure_generic,
+				{<<"modaclouds-components-metric-importer--run-component">>, defaults}}}.
