@@ -14,7 +14,7 @@ import . "mosaic-components/examples/simple-server"
 import . "mosaic-components/libraries/messages"
 
 
-var selfGroup = ComponentGroup ("8170ac9800426eb467537d37b7172e1d96f993b7")
+var selfGroup = ComponentGroup ("ead924d8dcfb024f365e229da1df6b29f650f9f0")
 
 
 type callbacks struct {
@@ -37,10 +37,10 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
 	_server.Transcript.TraceInformation ("  * using the HTTP endpoint: `%s:%d`;", _callbacks.httpIp.String (), _callbacks.httpPort)
 	
-	_server.ProcessExecutable = os.Getenv ("modaclouds_knowledgebase_run")
+	_server.ProcessExecutable = os.Getenv ("modaclouds_load_balancer_controller_run")
 	_server.ProcessEnvironment = map[string]string {
-			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_IP" : _callbacks.httpIp.String (),
-			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
+			"MODACLOUDS_LOAD_BALANCER_CONTROLLER_ENDPOINT_IP" : _callbacks.httpIp.String (),
+			"MODACLOUDS_LOAD_BALANCER_CONTROLLER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
 	}
 	_server.SelfGroup = selfGroup
 	
@@ -52,7 +52,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 	
 	switch _operation {
 		
-		case "modaclouds-knowledgebase:get-http-endpoint" :
+		case "modaclouds-load-balancer-controller:get-http-endpoint" :
 			
 			_outputs = map[string]interface{} {
 					"ip" : _callbacks.httpIp.String (),
