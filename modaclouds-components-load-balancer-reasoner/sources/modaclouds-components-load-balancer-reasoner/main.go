@@ -15,7 +15,7 @@ import . "mosaic-components/libraries/messages"
 
 
 var selfGroup = ComponentGroup ("d2de45f4682384c59206042dce79a04fec7ef90e")
-var controllerGroup = ComponentGroup ("ead924d8dcfb024f365e229da1df6b29f650f9f0")
+var ctlGroup = ComponentGroup ("ead924d8dcfb024f365e229da1df6b29f650f9f0")
 
 
 type callbacks struct {
