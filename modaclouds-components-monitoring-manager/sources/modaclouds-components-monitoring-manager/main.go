@@ -109,6 +109,7 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.sdaMatlabPort),
 			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_IP" : _callbacks.kbIp.String (),
 			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.kbPort),
+			// FIXME: Also export `TMPDIR`!
 	}
 	_server.SelfGroup = selfGroup
 	

@@ -18,29 +18,47 @@ var selfGroup = ComponentGroup ("ead924d8dcfb024f365e229da1df6b29f650f9f0")
 
 
 type callbacks struct {
-	httpIp net.IP
-	httpPort uint16
-	httpFqdn string
+	controllerIp net.IP
+	controllerPort uint16
+	controllerFqdn string
+	gatewayIp net.IP
+	gatewayPort uint16
+	gatewayFqdn string
 }
 
 
 func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
-	_server.Transcript.TraceInformation ("acquiring the HTTP endpoint...")
-	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketAcquire (ResourceIdentifier ("http")); _error != nil {
+	_server.Transcript.TraceInformation ("acquiring the controller HTTP endpoint...")
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketAcquire (ResourceIdentifier ("controller")); _error != nil {
 		return _error
 	} else {
-		_callbacks.httpIp = _ip_1
-		_callbacks.httpPort = _port_1
-		_callbacks.httpFqdn = _fqdn_1
+		_callbacks.controllerIp = _ip_1
+		_callbacks.controllerPort = _port_1
+		_callbacks.controllerFqdn = _fqdn_1
 	}
 	
-	_server.Transcript.TraceInformation ("  * using the HTTP endpoint: `%s:%d`;", _callbacks.httpIp.String (), _callbacks.httpPort)
+	_server.Transcript.TraceInformation ("  * using the controller HTTP endpoint: `%s:%d`;", _callbacks.controllerIp.String (), _callbacks.controllerPort)
+	
+	_server.Transcript.TraceInformation ("acquiring the gateway TCP endpoint...")
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketAcquire (ResourceIdentifier ("gateway")); _error != nil {
+		return _error
+	} else {
+		_callbacks.gatewayIp = _ip_1
+		_callbacks.gatewayPort = _port_1
+		_callbacks.gatewayFqdn = _fqdn_1
+	}
+	
+	_server.Transcript.TraceInformation ("  * using the gateway TCP endpoint: `%s:%d`;", _callbacks.gatewayIp.String (), _callbacks.gatewayPort)
 	
 	_server.ProcessExecutable = os.Getenv ("modaclouds_load_balancer_controller_run")
 	_server.ProcessEnvironment = map[string]string {
-			"MODACLOUDS_LOAD_BALANCER_CONTROLLER_ENDPOINT_IP" : _callbacks.httpIp.String (),
-			"MODACLOUDS_LOAD_BALANCER_CONTROLLER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
+			"MODACLOUDS_LOAD_BALANCER_CONTROLLER_ENDPOINT_IP" : _callbacks.controllerIp.String (),
+			"MODACLOUDS_LOAD_BALANCER_CONTROLLER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.controllerPort),
+			"MODACLOUDS_LOAD_BALANCER_GATEWAY_ENDPOINT_IP" : _callbacks.gatewayIp.String (),
+			"MODACLOUDS_LOAD_BALANCER_GATEWAY_ENDPOINT_PORT_MIN" : fmt.Sprintf ("%d", _callbacks.gatewayPort),
+			"MODACLOUDS_LOAD_BALANCER_GATEWAY_ENDPOINT_PORT_MAX" : fmt.Sprintf ("%d", _callbacks.gatewayPort),
+			// FIXME: Also export `TMPDIR`!
 	}
 	_server.SelfGroup = selfGroup
 	
@@ -52,13 +70,22 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 	
 	switch _operation {
 		
-		case "modaclouds-load-balancer-controller:get-http-endpoint" :
+		case "modaclouds-load-balancer-controller:get-controller-endpoint" :
 			
 			_outputs = map[string]interface{} {
-					"ip" : _callbacks.httpIp.String (),
-					"port" : _callbacks.httpPort,
-					"fqdn" : _callbacks.httpFqdn,
-					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.httpFqdn, _callbacks.httpPort),
+					"ip" : _callbacks.controllerIp.String (),
+					"port" : _callbacks.controllerPort,
+					"fqdn" : _callbacks.controllerFqdn,
+					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.controllerFqdn, _callbacks.controllerPort),
+			}
+			
+		case "modaclouds-load-balancer-controller:get-gateway-endpoint" :
+			
+			_outputs = map[string]interface{} {
+					"ip" : _callbacks.gatewayIp.String (),
+					"port" : _callbacks.gatewayPort,
+					"fqdn" : _callbacks.gatewayFqdn,
+					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.gatewayFqdn, _callbacks.gatewayPort),
 			}
 			
 		default :

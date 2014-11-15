@@ -25,6 +25,9 @@ type callbacks struct {
 	ctlIp net.IP
 	ctlPort uint16
 	ctlFqdn string
+	gatewayIp net.IP
+	gatewayPort uint16
+	gatewayFqdn string
 }
 
 
@@ -42,7 +45,7 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	_server.Transcript.TraceInformation ("  * using the HTTP endpoint: `%s:%d`;", _callbacks.httpIp.String (), _callbacks.httpPort)
 	
 	_server.Transcript.TraceInformation ("resolving the controller HTTP endpoint...")
-	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (ctlGroup, "modaclouds-load-balancer-controller:get-http-endpoint"); _error != nil {
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (ctlGroup, "modaclouds-load-balancer-controller:get-controller-endpoint"); _error != nil {
 		return _error
 	} else {
 		_callbacks.ctlIp = _ip_1
@@ -50,7 +53,19 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 		_callbacks.ctlFqdn = _fqdn_1
 	}
 	
-	_server.Transcript.TraceInformation ("  * using the controller endpoint: `%s:%d`;", _callbacks.ctlIp.String (), _callbacks.ctlPort)
+	_server.Transcript.TraceInformation ("  * using the controller HTTP endpoint: `%s:%d`;", _callbacks.ctlIp.String (), _callbacks.ctlPort)
+	
+	_server.Transcript.TraceInformation ("resolving the gateway TCP endpoint...")
+	// FIXME: If there are multiple load-balancers, this might not match with the controller endpoint of above.
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (ctlGroup, "modaclouds-load-balancer-controller:get-gateway-endpoint"); _error != nil {
+		return _error
+	} else {
+		_callbacks.gatewayIp = _ip_1
+		_callbacks.gatewayPort = _port_1
+		_callbacks.gatewayFqdn = _fqdn_1
+	}
+	
+	_server.Transcript.TraceInformation ("  * using the gateway TCP endpoint: `%s:%d`;", _callbacks.gatewayIp.String (), _callbacks.gatewayPort)
 	
 	_server.ProcessExecutable = os.Getenv ("modaclouds_load_balancer_reasoner_run")
 	_server.ProcessEnvironment = map[string]string {
@@ -58,6 +73,10 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 			"MODACLOUDS_LOAD_BALANCER_REASONER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
 			"MODACLOUDS_LOAD_BALANCER_CONTROLLER_ENDPOINT_IP" : _callbacks.ctlIp.String (),
 			"MODACLOUDS_LOAD_BALANCER_CONTROLLER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.ctlPort),
+			"MODACLOUDS_LOAD_BALANCER_GATEWAY_ENDPOINT_IP" : _callbacks.gatewayIp.String (),
+			"MODACLOUDS_LOAD_BALANCER_GATEWAY_ENDPOINT_PORT_MIN" : fmt.Sprintf ("%d", _callbacks.gatewayPort),
+			"MODACLOUDS_LOAD_BALANCER_GATEWAY_ENDPOINT_PORT_MAX" : fmt.Sprintf ("%d", _callbacks.gatewayPort),
+			// FIXME: Also export `TMPDIR`!
 	}
 	_server.SelfGroup = selfGroup
 	

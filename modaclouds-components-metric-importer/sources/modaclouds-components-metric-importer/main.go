@@ -22,6 +22,9 @@ type callbacks struct {
 	httpIp net.IP
 	httpPort uint16
 	httpFqdn string
+	graphiteIp net.IP
+	graphitePort uint16
+	graphiteFqdn string
 }
 
 
@@ -38,10 +41,24 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
 	_server.Transcript.TraceInformation ("  * using the HTTP endpoint: `%s:%d`;", _callbacks.httpIp.String (), _callbacks.httpPort)
 	
+	_server.Transcript.TraceInformation ("resolving the metric explorer line receiver endpoint...")
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (explorerGroup, "modaclouds-metric-explorer:get-line-receiver-endpoint"); _error != nil {
+		return _error
+	} else {
+		_callbacks.graphiteIp = _ip_1
+		_callbacks.graphitePort = _port_1
+		_callbacks.graphiteFqdn = _fqdn_1
+	}
+	
+	_server.Transcript.TraceInformation ("  * using the metric explorer line receiver endpoint: `%s:%d`;", _callbacks.graphiteIp.String (), _callbacks.graphitePort)
+	
 	_server.ProcessExecutable = os.Getenv ("modaclouds_metric_importer_run")
 	_server.ProcessEnvironment = map[string]string {
 			"MODACLOUDS_METRIC_IMPORTER_ENDPOINT_IP" : _callbacks.httpIp.String (),
 			"MODACLOUDS_METRIC_IMPORTER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
+			"MODACLOUDS_METRIC_EXPLORER_LINE_RECEIVER_ENDPOINT_IP" : _callbacks.graphiteIp.String (),
+			"MODACLOUDS_METRIC_EXPLORER_LINE_RECEIVER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.graphitePort),
+			// FIXME: Also export `TMPDIR`!
 	}
 	_server.SelfGroup = selfGroup
 	
