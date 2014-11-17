@@ -41,7 +41,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	_server.ProcessEnvironment = map[string]string {
 			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_IP" : _callbacks.httpIp.String (),
 			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
-			// FIXME: Also export `TMPDIR`!
+			"modaclouds_service_identifier" : string (_server.Identifier),
+			"modaclouds_service_temporary" : fmt.Sprintf ("%s/service", _server.Temporary),
 	}
 	_server.SelfGroup = selfGroup
 	

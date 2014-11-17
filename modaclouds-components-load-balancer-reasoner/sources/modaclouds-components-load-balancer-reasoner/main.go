@@ -76,7 +76,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 			"MODACLOUDS_LOAD_BALANCER_GATEWAY_ENDPOINT_IP" : _callbacks.gatewayIp.String (),
 			"MODACLOUDS_LOAD_BALANCER_GATEWAY_ENDPOINT_PORT_MIN" : fmt.Sprintf ("%d", _callbacks.gatewayPort),
 			"MODACLOUDS_LOAD_BALANCER_GATEWAY_ENDPOINT_PORT_MAX" : fmt.Sprintf ("%d", _callbacks.gatewayPort),
-			// FIXME: Also export `TMPDIR`!
+			"modaclouds_service_identifier" : string (_server.Identifier),
+			"modaclouds_service_temporary" : fmt.Sprintf ("%s/service", _server.Temporary),
 	}
 	_server.SelfGroup = selfGroup
 	

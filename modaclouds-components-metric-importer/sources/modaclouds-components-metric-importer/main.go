@@ -58,7 +58,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 			"MODACLOUDS_METRIC_IMPORTER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
 			"MODACLOUDS_METRIC_EXPLORER_LINE_RECEIVER_ENDPOINT_IP" : _callbacks.graphiteIp.String (),
 			"MODACLOUDS_METRIC_EXPLORER_LINE_RECEIVER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.graphitePort),
-			// FIXME: Also export `TMPDIR`!
+			"modaclouds_service_identifier" : string (_server.Identifier),
+			"modaclouds_service_temporary" : fmt.Sprintf ("%s/service", _server.Temporary),
 	}
 	_server.SelfGroup = selfGroup
 	

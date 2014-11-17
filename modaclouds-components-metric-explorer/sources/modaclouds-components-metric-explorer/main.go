@@ -89,7 +89,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 			"MODACLOUDS_METRIC_EXPLORER_PICKLE_RECEIVER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.pickleReceiverPort),
 			"MODACLOUDS_METRIC_EXPLORER_LINE_RECEIVER_ENDPOINT_IP" : _callbacks.lineReceiverIp.String (),
 			"MODACLOUDS_METRIC_EXPLORER_LINE_RECEIVER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.lineReceiverPort),
-			// FIXME: Also export `TMPDIR`!
+			"modaclouds_service_identifier" : string (_server.Identifier),
+			"modaclouds_service_temporary" : fmt.Sprintf ("%s/service", _server.Temporary),
 	}
 	_server.SelfGroup = selfGroup
 	
