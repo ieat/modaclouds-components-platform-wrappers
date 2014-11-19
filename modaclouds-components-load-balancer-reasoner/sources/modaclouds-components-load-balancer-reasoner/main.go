@@ -112,4 +112,4 @@ func main () () {
 }
 
 
-var packageTranscript = transcript.NewPackageTranscript ()
+var packageTranscript = transcript.NewPackageTranscript (transcript.InformationLevel)
