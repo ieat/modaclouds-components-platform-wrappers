@@ -1,6 +1,0 @@
-
-{process_group_alias, 'modaclouds-components:knowledgebase', <<16#8170ac9800426eb467537d37b7172e1d96f993b7 : 160>>}.
-
-{process_configurator, 'modaclouds-components:knowledgebase', [term, json],
-		{mosaic_component_process_configurators, configure_generic,
-				{<<"modaclouds-components-knowledgebase--run-component">>, defaults}}}.

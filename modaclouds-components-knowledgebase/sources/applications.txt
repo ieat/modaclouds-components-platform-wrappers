@@ -1,1 +1,0 @@
-component-backend modaclouds-components-knowledgebase/main.go
