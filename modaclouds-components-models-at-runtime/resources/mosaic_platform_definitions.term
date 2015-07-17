@@ -1,0 +1,6 @@
+
+{process_group_alias, 'modaclouds-components:models-at-runtime', <<16#60932ee0f0deac557e2e4bf2d474c06ce669da29 : 160>>}.
+
+{process_configurator, 'modaclouds-components:models-at-runtime', [term, json],
+		{mosaic_component_process_configurators, configure_generic,
+				{<<"modaclouds-components-models-at-runtime--run-component">>, defaults}}}.

@@ -1,0 +1,6 @@
+
+{process_group_alias, 'modaclouds-components:sla-core', <<16#3d349decd4ea24f20c5aae4fbaa9b5024c28ab03 : 160>>}.
+
+{process_configurator, 'modaclouds-components:sla-core', [term, json],
+		{mosaic_component_process_configurators, configure_generic,
+				{<<"modaclouds-components-sla-core--run-component">>, defaults}}}.

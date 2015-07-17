@@ -1,0 +1,6 @@
+
+{process_group_alias, 'modaclouds-components:fg-analyzer', <<16#283dc6bea50ff0fed89b36860bad571fe3541780 : 160>>}.
+
+{process_configurator, 'modaclouds-components:fg-analyzer', [term, json],
+		{mosaic_component_process_configurators, configure_generic,
+				{<<"modaclouds-components-fg-analyzer--run-component">>, defaults}}}.

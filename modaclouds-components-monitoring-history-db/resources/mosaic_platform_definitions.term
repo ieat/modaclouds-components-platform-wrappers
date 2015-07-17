@@ -1,0 +1,6 @@
+
+{process_group_alias, 'modaclouds-components:monitoring-history-db', <<16#3fd8108ea06e07ae7adc86cc52e8c9560c65b3c1 : 160>>}.
+
+{process_configurator, 'modaclouds-components:monitoring-history-db', [term, json],
+		{mosaic_component_process_configurators, configure_generic,
+				{<<"modaclouds-components-monitoring-history-db--run-component">>, defaults}}}.

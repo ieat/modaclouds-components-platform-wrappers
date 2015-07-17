@@ -1,0 +1,6 @@
+
+{process_group_alias, 'modaclouds-components:fg-local-db', <<16#3cf6a77225877c935f3208a8d3e5eb8f455cc96b : 160>>}.
+
+{process_configurator, 'modaclouds-components:fg-local-db', [term, json],
+		{mosaic_component_process_configurators, configure_generic,
+				{<<"modaclouds-components-fg-local-db--run-component">>, defaults}}}.
