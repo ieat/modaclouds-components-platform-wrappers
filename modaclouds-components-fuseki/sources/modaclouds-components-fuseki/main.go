@@ -39,8 +39,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
 	_server.ProcessExecutable = os.Getenv ("modaclouds_fuseki_run")
 	_server.ProcessEnvironment = map[string]string {
-			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_IP" : _callbacks.httpIp.String (),
-			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
+			"MODACLOUDS_FUSEKI_ENDPOINT_IP" : _callbacks.httpIp.String (),
+			"MODACLOUDS_FUSEKI_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
 			"modaclouds_service_identifier" : string (_server.Identifier),
 			"modaclouds_service_temporary" : fmt.Sprintf ("%s/service", _server.Temporary),
 	}
