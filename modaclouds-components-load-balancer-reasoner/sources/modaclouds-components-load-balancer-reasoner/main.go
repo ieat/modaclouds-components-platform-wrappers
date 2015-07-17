@@ -67,7 +67,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
 	_server.Transcript.TraceInformation ("  * using the gateway TCP endpoint: `%s:%d`;", _callbacks.gatewayIp.String (), _callbacks.gatewayPort)
 	
-	_server.ProcessExecutable = os.Getenv ("modaclouds_load_balancer_reasoner_run")
+	_server.ProcessExecutable = os.Getenv ("modaclouds_service_run")
+	
 	_server.ProcessEnvironment = map[string]string {
 			"MODACLOUDS_LOAD_BALANCER_REASONER_ENDPOINT_IP" : _callbacks.httpIp.String (),
 			"MODACLOUDS_LOAD_BALANCER_REASONER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),

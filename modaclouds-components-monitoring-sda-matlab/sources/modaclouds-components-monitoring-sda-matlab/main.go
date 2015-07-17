@@ -67,7 +67,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
 	_server.Transcript.TraceInformation ("  * using the KB endpoint: `%s:%d`;", _callbacks.kbIp.String (), _callbacks.kbPort)
 	
-	_server.ProcessExecutable = os.Getenv ("modaclouds_monitoring_sda_matlab_run")
+	_server.ProcessExecutable = os.Getenv ("modaclouds_service_run")
+	
 	_server.ProcessEnvironment = map[string]string {
 			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_IP" : _callbacks.httpIp.String (),
 			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),

@@ -79,7 +79,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
 	_server.Transcript.TraceInformation ("  * using the line-receiver TCP endpoint: `%s:%d`;", _callbacks.lineReceiverIp.String (), _callbacks.lineReceiverPort)
 	
-	_server.ProcessExecutable = os.Getenv ("modaclouds_metric_explorer_run")
+	_server.ProcessExecutable = os.Getenv ("modaclouds_service_run")
+	
 	_server.ProcessEnvironment = map[string]string {
 			"MODACLOUDS_METRIC_EXPLORER_DASHBOARD_ENDPOINT_IP" : _callbacks.dashboardIp.String (),
 			"MODACLOUDS_METRIC_EXPLORER_DASHBOARD_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.dashboardPort),

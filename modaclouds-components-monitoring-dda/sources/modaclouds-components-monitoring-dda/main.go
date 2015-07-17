@@ -37,7 +37,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
 	_server.Transcript.TraceInformation ("  * using the HTTP endpoint: `%s:%d`;", _callbacks.httpIp.String (), _callbacks.httpPort)
 	
-	_server.ProcessExecutable = os.Getenv ("modaclouds_monitoring_dda_run")
+	_server.ProcessExecutable = os.Getenv ("modaclouds_service_run")
+	
 	_server.ProcessEnvironment = map[string]string {
 			"MODACLOUDS_MONITORING_DDA_ENDPOINT_IP" : _callbacks.httpIp.String (),
 			"MODACLOUDS_MONITORING_DDA_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),

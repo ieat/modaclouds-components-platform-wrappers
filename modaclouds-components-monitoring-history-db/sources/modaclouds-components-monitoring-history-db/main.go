@@ -23,6 +23,7 @@ type callbacks struct {
 func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
 	_server.ProcessExecutable = os.Getenv ("modaclouds_service_run")
+	
 	_server.ProcessEnvironment = map[string]string {
 			"modaclouds_service_identifier" : string (_server.Identifier),
 			"modaclouds_service_temporary" : fmt.Sprintf ("%s/service", _server.Temporary),
