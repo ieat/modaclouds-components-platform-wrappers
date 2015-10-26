@@ -40,8 +40,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	_server.ProcessExecutable = os.Getenv ("modaclouds_service_run")
 	
 	_server.ProcessEnvironment = map[string]string {
-			"MODACLOUDS_MONITORING_DDA_ENDPOINT_IP" : _callbacks.httpIp.String (),
-			"MODACLOUDS_MONITORING_DDA_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
+			"MODACLOUDS_TOWER4CLOUDS_DATA_ANALYZER_ENDPOINT_IP" : _callbacks.httpIp.String (),
+			"MODACLOUDS_TOWER4CLOUDS_DATA_ANALYZER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
 			"modaclouds_service_identifier" : string (_server.Identifier),
 			"modaclouds_service_temporary" : fmt.Sprintf ("%s/service", _server.Temporary),
 	}
@@ -63,7 +63,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 					"fqdn" : _callbacks.httpFqdn,
 					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.httpFqdn, _callbacks.httpPort),
 			}
-			
+		
 		default :
 			
 			_error = errors.New ("invalid-operation")

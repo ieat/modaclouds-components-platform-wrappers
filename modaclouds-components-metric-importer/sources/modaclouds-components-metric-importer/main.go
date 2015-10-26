@@ -80,7 +80,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 					"fqdn" : _callbacks.httpFqdn,
 					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.httpFqdn, _callbacks.httpPort),
 			}
-			
+		
 		default :
 			
 			_error = errors.New ("invalid-operation")

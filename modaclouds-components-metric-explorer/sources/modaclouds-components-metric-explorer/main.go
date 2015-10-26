@@ -111,7 +111,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 					"fqdn" : _callbacks.dashboardFqdn,
 					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.dashboardFqdn, _callbacks.dashboardPort),
 			}
-			
+		
 		case "modaclouds-metric-explorer:get-query-endpoint" :
 			
 			_outputs = map[string]interface{} {
@@ -120,7 +120,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 					"fqdn" : _callbacks.queryFqdn,
 					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.queryFqdn, _callbacks.queryPort),
 			}
-			
+		
 		case "modaclouds-metric-explorer:get-pickle-receiver-endpoint" :
 			
 			_outputs = map[string]interface{} {
@@ -129,7 +129,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 					"fqdn" : _callbacks.pickleReceiverFqdn,
 					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.pickleReceiverFqdn, _callbacks.pickleReceiverPort),
 			}
-			
+		
 		case "modaclouds-metric-explorer:get-line-receiver-endpoint" :
 			
 			_outputs = map[string]interface{} {
@@ -138,7 +138,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 					"fqdn" : _callbacks.lineReceiverFqdn,
 					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.lineReceiverFqdn, _callbacks.lineReceiverPort),
 			}
-			
+		
 		default :
 			
 			_error = errors.New ("invalid-operation")

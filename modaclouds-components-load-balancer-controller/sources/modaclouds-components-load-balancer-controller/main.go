@@ -80,7 +80,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 					"fqdn" : _callbacks.controllerFqdn,
 					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.controllerFqdn, _callbacks.controllerPort),
 			}
-			
+		
 		case "modaclouds-load-balancer-controller:get-gateway-endpoint" :
 			
 			_outputs = map[string]interface{} {
@@ -89,7 +89,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 					"fqdn" : _callbacks.gatewayFqdn,
 					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.gatewayFqdn, _callbacks.gatewayPort),
 			}
-			
+		
 		default :
 			
 			_error = errors.New ("invalid-operation")

@@ -16,9 +16,7 @@ import . "mosaic-components/libraries/messages"
 
 var selfGroup = ComponentGroup ("70e89545c5078bb95618f0fc5ff9283c87d8e687")
 var ddaGroup = ComponentGroup ("2202877ee831a07c419eb9c62721e220d3251483")
-var sdaWekaGroup = ComponentGroup ("c79a3a7cb3c78724cc88001b67e332376cd95d0f")
-var sdaMatlabGroup = ComponentGroup ("ea4d6199f422180ffefeccb795cfea5d1eee5d0d")
-var kbGroup = ComponentGroup ("8170ac9800426eb467537d37b7172e1d96f993b7")
+var historyDbGroup = ComponentGroup ("3fd8108ea06e07ae7adc86cc52e8c9560c65b3c1")
 
 
 type callbacks struct {
@@ -28,15 +26,9 @@ type callbacks struct {
 	ddaIp net.IP
 	ddaPort uint16
 	ddaFqdn string
-	sdaWekaIp net.IP
-	sdaWekaPort uint16
-	sdaWekaFqdn string
-	sdaMatlabIp net.IP
-	sdaMatlabPort uint16
-	sdaMatlabFqdn string
-	kbIp net.IP
-	kbPort uint16
-	kbFqdn string
+	historyDbIp net.IP
+	historyDbPort uint16
+	historyDbFqdn string
 }
 
 
@@ -64,52 +56,29 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
 	_server.Transcript.TraceInformation ("  * using the DDA endpoint: `%s:%d`;", _callbacks.ddaIp.String (), _callbacks.ddaPort)
 	
-	_server.Transcript.TraceInformation ("resolving the SDA Weka HTTP endpoint...")
-	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (sdaWekaGroup, "modaclouds-monitoring-sda-weka:get-http-endpoint"); _error != nil {
+	_server.Transcript.TraceInformation ("resolving the History DB HTTP endpoint...")
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (historyDbGroup, "modaclouds-monitoring-history-db:get-http-endpoint"); _error != nil {
 		return _error
 	} else {
-		_callbacks.sdaWekaIp = _ip_1
-		_callbacks.sdaWekaPort = _port_1
-		_callbacks.sdaWekaFqdn = _fqdn_1
+		_callbacks.historyDbIp = _ip_1
+		_callbacks.historyDbPort = _port_1
+		_callbacks.historyDbFqdn = _fqdn_1
 	}
 	
-	_server.Transcript.TraceInformation ("  * using the SDA Weka endpoint: `%s:%d`;", _callbacks.sdaWekaIp.String (), _callbacks.sdaWekaPort)
-	
-	_server.Transcript.TraceInformation ("resolving the SDA Matlab HTTP endpoint...")
-	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (sdaMatlabGroup, "modaclouds-monitoring-sda-matlab:get-http-endpoint"); _error != nil {
-		return _error
-	} else {
-		_callbacks.sdaMatlabIp = _ip_1
-		_callbacks.sdaMatlabPort = _port_1
-		_callbacks.sdaMatlabFqdn = _fqdn_1
-	}
-	
-	_server.Transcript.TraceInformation ("  * using the SDA Matlab endpoint: `%s:%d`;", _callbacks.sdaMatlabIp.String (), _callbacks.sdaMatlabPort)
-	
-	_server.Transcript.TraceInformation ("resolving the knowledgebase HTTP endpoint...")
-	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (kbGroup, "modaclouds-knowledgebase:get-http-endpoint"); _error != nil {
-		return _error
-	} else {
-		_callbacks.kbIp = _ip_1
-		_callbacks.kbPort = _port_1
-		_callbacks.kbFqdn = _fqdn_1
-	}
-	
-	_server.Transcript.TraceInformation ("  * using the KB endpoint: `%s:%d`;", _callbacks.kbIp.String (), _callbacks.kbPort)
+	_server.Transcript.TraceInformation ("  * using the Hisory DB endpoint: `%s:%d`;", _callbacks.historyDbIp.String (), _callbacks.historyDbPort)
 	
 	_server.ProcessExecutable = os.Getenv ("modaclouds_service_run")
 	
 	_server.ProcessEnvironment = map[string]string {
-			"MODACLOUDS_MONITORING_MANAGER_ENDPOINT_IP" : _callbacks.httpIp.String (),
-			"MODACLOUDS_MONITORING_MANAGER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
-			"MODACLOUDS_MONITORING_DDA_ENDPOINT_IP" : _callbacks.ddaIp.String (),
-			"MODACLOUDS_MONITORING_DDA_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.ddaPort),
-			"MODACLOUDS_MONITORING_SDA_WEKA_ENDPOINT_IP" : _callbacks.sdaWekaIp.String (),
-			"MODACLOUDS_MONITORING_SDA_WEKA_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.sdaWekaPort),
-			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_IP" : _callbacks.sdaMatlabIp.String (),
-			"MODACLOUDS_MONITORING_SDA_MATLAB_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.sdaMatlabPort),
-			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_IP" : _callbacks.kbIp.String (),
-			"MODACLOUDS_KNOWLEDGEBASE_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.kbPort),
+			"MODACLOUDS_TOWER4CLOUDS_MANAGER_ENDPOINT_IP" : _callbacks.httpIp.String (),
+			"MODACLOUDS_TOWER4CLOUDS_MANAGER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
+			"MODACLOUDS_TOWER4CLOUDS_DATA_ANALYZER_ENDPOINT_IP" : _callbacks.ddaIp.String (),
+			"MODACLOUDS_TOWER4CLOUDS_DATA_ANALYZER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.ddaPort),
+			// FIXME:  Resolve and use the actual public IP!
+			"MODACLOUDS_TOWER4CLOUDS_DATA_ANALYZER_ENDPOINT_IP_PUBLIC" : _callbacks.ddaIp.String (),
+			"MODACLOUDS_TOWER4CLOUDS_DATA_ANALYZER_ENDPOINT_PORT_PUBLIC" : fmt.Sprintf ("%d", _callbacks.ddaPort),
+			"MODACLOUDS_TOWER4CLOUDS_RDF_HISTORY_DB_ENDPOINT_IP" : _callbacks.historyDbIp.String (),
+			"MODACLOUDS_TOWER4CLOUDS_RDF_HISTORY_DB_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.historyDbPort),
 			"modaclouds_service_identifier" : string (_server.Identifier),
 			"modaclouds_service_temporary" : fmt.Sprintf ("%s/service", _server.Temporary),
 	}
@@ -131,7 +100,7 @@ func (_callbacks *callbacks) Called (_server *SimpleServer, _operation Component
 					"fqdn" : _callbacks.httpFqdn,
 					"url" : fmt.Sprintf ("http://%s:%d/", _callbacks.httpFqdn, _callbacks.httpPort),
 			}
-			
+		
 		default :
 			
 			_error = errors.New ("invalid-operation")
