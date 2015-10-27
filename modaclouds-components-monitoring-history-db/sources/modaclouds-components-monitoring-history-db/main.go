@@ -43,6 +43,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 		_callbacks.httpFqdn = _fqdn_1
 	}
 	
+	_server.Transcript.TraceInformation ("  * using the HTTP endpoint: `%s:%d`;", _callbacks.httpIp.String (), _callbacks.httpPort)
+	
 	_server.Transcript.TraceInformation ("resolving the Fuseki HTTP endpoint...")
 	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (fusekiGroup, "modaclouds-fuseki:get-http-endpoint"); _error != nil {
 		return _error
