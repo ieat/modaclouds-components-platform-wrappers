@@ -74,6 +74,9 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 			"MODACLOUDS_MODELS_AT_RUNTIME_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.httpPort),
 			"MODACLOUDS_TOWER4CLOUDS_MANAGER_ENDPOINT_IP" : _callbacks.managerIp.String (),
 			"MODACLOUDS_TOWER4CLOUDS_MANAGER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.managerPort),
+			// FIXME:  Resolve and use the actual public IP!
+			"MODACLOUDS_TOWER4CLOUDS_MANAGER_ENDPOINT_IP_PUBLIC" : _callbacks.managerIp.String (),
+			"MODACLOUDS_TOWER4CLOUDS_MANAGER_ENDPOINT_PORT_PUBLIC" : fmt.Sprintf ("%d", _callbacks.managerPort),
 			"MODACLOUDS_LOAD_BALANCER_CONTROLLER_ENDPOINT_IP" : _callbacks.lbCtlIp.String (),
 			"MODACLOUDS_LOAD_BALANCER_CONTROLLER_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.lbCtlPort),
 			"modaclouds_service_identifier" : string (_server.Identifier),

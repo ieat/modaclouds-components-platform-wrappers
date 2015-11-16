@@ -15,14 +15,14 @@ import . "mosaic-components/libraries/messages"
 
 
 var selfGroup = ComponentGroup ("283dc6bea50ff0fed89b36860bad571fe3541780")
-var localDbGroup = ComponentGroup ("3cf6a77225877c935f3208a8d3e5eb8f455cc96b")
+var fusekiGroup = ComponentGroup ("8170ac9800426eb467537d37b7172e1d96f993b7")
 var objectStoreGroup = ComponentGroup ("12eb4738d08c260872f6da2980aaec4f6995f570")
 
 
 type callbacks struct {
-	localDbIp net.IP
-	localDbPort uint16
-	localDbFqdn string
+	fusekiIp net.IP
+	fusekiPort uint16
+	fusekiFqdn string
 	objectStoreIp net.IP
 	objectStorePort uint16
 	objectStoreFqdn string
@@ -31,16 +31,16 @@ type callbacks struct {
 
 func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	
-	_server.Transcript.TraceInformation ("resolving the FG local DB HTTP endpoint...")
-	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (localDbGroup, "modaclouds-fg-local-db:get-http-endpoint"); _error != nil {
+	_server.Transcript.TraceInformation ("resolving the Fuseki HTTP endpoint...")
+	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (fusekiGroup, "modaclouds-fuseki:get-http-endpoint"); _error != nil {
 		return _error
 	} else {
-		_callbacks.localDbIp = _ip_1
-		_callbacks.localDbPort = _port_1
-		_callbacks.localDbFqdn = _fqdn_1
+		_callbacks.fusekiIp = _ip_1
+		_callbacks.fusekiPort = _port_1
+		_callbacks.fusekiFqdn = _fqdn_1
 	}
 	
-	_server.Transcript.TraceInformation ("  * using the FG local DB HTTP endpoint: `%s:%d`;", _callbacks.localDbIp.String (), _callbacks.localDbPort)
+	_server.Transcript.TraceInformation ("  * using the Fuseki HTTP endpoint: `%s:%d`;", _callbacks.fusekiIp.String (), _callbacks.fusekiPort)
 	
 	_server.Transcript.TraceInformation ("resolving the object store HTTP endpoint...")
 	if _ip_1, _port_1, _fqdn_1, _error := _server.TcpSocketResolve (objectStoreGroup, "mosaic-object-store:get-service-endpoint"); _error != nil {
@@ -56,8 +56,8 @@ func (_callbacks *callbacks) Initialize (_server *SimpleServer) (error) {
 	_server.ProcessExecutable = os.Getenv ("modaclouds_service_run")
 	
 	_server.ProcessEnvironment = map[string]string {
-			"MODACLOUDS_FUSEKI_ENDPOINT_IP" : _callbacks.localDbIp.String (),
-			"MODACLOUDS_FUSEKI_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.localDbPort),
+			"MODACLOUDS_FUSEKI_ENDPOINT_IP" : _callbacks.fusekiIp.String (),
+			"MODACLOUDS_FUSEKI_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.fusekiPort),
 			"MOSAIC_OBJECT_STORE_ENDPOINT_IP" : _callbacks.objectStoreIp.String (),
 			"MOSAIC_OBJECT_STORE_ENDPOINT_PORT" : fmt.Sprintf ("%d", _callbacks.objectStorePort),
 			"modaclouds_service_identifier" : string (_server.Identifier),
